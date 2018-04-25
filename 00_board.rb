@@ -1,18 +1,17 @@
 require 'byebug'
-require_relative 'piece'
-require_relative 'NullPiece'
-require_relative 'display'
-require_relative 'rook'
-require_relative 'knight'
-require_relative 'bishop'
-require_relative 'king'
-require_relative 'queen'
-require_relative 'pawn'
+require_relative '01_display'
+require_relative 'p1_null'
+require_relative 'p2_pawn'
+require_relative 'p3_rook'
+require_relative 'p4_knight'
+require_relative 'p5_bishop'
+require_relative 'p6_queen'
+require_relative 'p7_king'
 
 
 class Board
-  attr_accessor :grid, :null_piece
-
+  attr_reader :null_piece
+  attr_accessor :grid
 
   def initialize
     @null_piece = NullPiece.instance
@@ -29,39 +28,32 @@ class Board
   end
 
   def populate
-    # @null_piece = NullPiece.instance
-
-
-    # debugger
-    self[[0,0]] = Rook.new(:blue,self,[0,0])
-    self[[0,7]] = Rook.new(:blue,self,[0,7])
-    self[[7,0]] = Rook.new(:red,self,[7,0])
-    self[[7,7]] = Rook.new(:red,self,[7,7])
-
-    self[[0,1]] = Knight.new(:blue,self,[0,1])
-    self[[0,6]] = Knight.new(:blue,self,[0,6])
-    self[[7,1]] = Knight.new(:red,self,[7,1])
-    self[[7,6]] = Knight.new(:red,self,[7,6])
-
-    self[[0,2]] = Bishop.new(:blue,self,[0,2])
-    self[[0,5]] = Bishop.new(:blue,self,[0,5])
-    self[[7,2]] = Bishop.new(:red,self,[7,2])
-    self[[7,5]] = Bishop.new(:red,self,[7,5])
-
-    self[[0,3]] = King.new(:blue,self,[0,3])
-    self[[7,4]] = King.new(:red,self,[7,4])
-    self[[0,4]] = Queen.new(:blue,self,[0,4])
-    self[[7,3]] = Queen.new(:blue,self,[7,3])
-
-    @grid.map!.with_index do |row,x|
-      # if [2,3,4,5].include?(x)
-      #   # row.map! { |col| col = @null_piece}
-      if [1].include?(x)
-        row.each_with_index {|col,y| col = Pawn.new(:blue,self,[x,y]) }
-      elsif [6].include?(x)
-        row.each_with_index {|col,y| col = Pawn.new(:red,self,[x,y]) }
+    @grid.each_with_index do |row, row_i|
+      if [1, 6].include?(row_i)
+        color = row_i == 1 ? :blue : :red
+        row.map!.with_index { |col, col_i| Pawn.new(color, [row_i, col_i])}
       end
     end
+
+    self[[0,0]] = Rook.new(:blue,[0,0])
+    self[[0,7]] = Rook.new(:blue,[0,7])
+    self[[7,0]] = Rook.new(:red,[7,0])
+    self[[7,7]] = Rook.new(:red,[7,7])
+
+    self[[0,1]] = Knight.new(:blue,[0,1])
+    self[[0,6]] = Knight.new(:blue,[0,6])
+    self[[7,1]] = Knight.new(:red,[7,1])
+    self[[7,6]] = Knight.new(:red,[7,6])
+
+    self[[0,2]] = Bishop.new(:blue,[0,2])
+    self[[0,5]] = Bishop.new(:blue,[0,5])
+    self[[7,2]] = Bishop.new(:red,[7,2])
+    self[[7,5]] = Bishop.new(:red,[7,5])
+
+    self[[0,3]] = King.new(:blue,[0,3])
+    self[[7,4]] = King.new(:red,[7,4])
+    self[[0,4]] = Queen.new(:blue,[0,4])
+    self[[7,3]] = Queen.new(:red,[7,3])
 
     @grid
   end
@@ -112,23 +104,4 @@ class Board
   def inspect
     "Your move!"
   end
-
- #  def render
- #    rows = ["0 | ", "1 | ", "2 | ", "3 | ", "4 | ", "5 | ", "6 | ", "7 | "]
- #    @grid.each_with_index do |row, i|
- #      row.each do |el|
- #        a = el.is_a?(NullPiece) ? " " : el.symbol
- #       rows[i] << "#{a} | "
- #     end
- #   end
- #
- #
- #   puts "    0   1   2   3   4   5   6   7"
- #   puts  "  ---------------------------------"
- #   rows.each do |row|
- #     puts row
- #     puts  "  ---------------------------------"
- #   end
- # end
-
 end

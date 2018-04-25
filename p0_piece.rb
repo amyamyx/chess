@@ -1,13 +1,13 @@
 require 'colorize'
 
 class Piece
-  attr_accessor :color,:board,:pos,:symbol
+  attr_accessor :color,:pos,:symbol
 
-  def initialize(color,board,pos)
+  def initialize(color,pos)
     @color = color
-    @board = board
+    # @board = board
     @pos = pos
-    @symbol = "♕".colorize(@color)
+    @symbol = "♖".colorize(@color)
   end
 
   def symbol

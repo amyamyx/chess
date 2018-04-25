@@ -1,13 +1,11 @@
-require_relative 'piece'
+require_relative 'p0_piece'
 require 'singleton'
 
 class NullPiece < Piece
   include Singleton
-
-  attr_accessor :color,:board,:pos,:symbol
+  attr_reader :symbol
 
   def initialize
-    super(color,board,pos)
-    @symbol = nil
+    @symbol = " "
   end
 end
